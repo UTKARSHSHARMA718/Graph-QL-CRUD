@@ -3,15 +3,14 @@ import { useMutation } from "@apollo/client";
 import { DELETE_PROJECTS } from "../mutations.js/client";
 import { GET_PROJECTS } from "../queries/client";
 
-const ProjectRow = ({ project }) => {
+const ProjectRow = ({ project, onUpdate }) => {
   const [deleteProjects] = useMutation(DELETE_PROJECTS, {
     variables: {
       id: project?.id,
     },
     refetchQueries: [{ query: GET_PROJECTS }],
   });
-  console.log({ project });
-
+  
   return (
     <tr>
       <td>{project?.name}</td>
@@ -22,6 +21,9 @@ const ProjectRow = ({ project }) => {
         <button className="btn btn-danger btn-sm" onClick={deleteProjects}>
           <FaRegTrashAlt />
         </button>
+      </td>
+      <td>
+        <button onClick={onUpdate}>Update</button>
       </td>
     </tr>
   );

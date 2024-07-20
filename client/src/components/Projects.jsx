@@ -2,9 +2,9 @@ import { useQuery } from "@apollo/client";
 import { GET_PROJECTS } from "../queries/client";
 import ProjectRow from "./ProjectRow";
 
-export default function Projects() {
+const Projects = ({ setSelectedProjectToUpdate }) => {
   const { loading, error, data } = useQuery(GET_PROJECTS);
-  console.log({ loading, error, data });
+  console.log({ loading, error, data, setSelectedProjectToUpdate });
 
   if (loading) {
     return <p>Loading....</p>;
@@ -26,9 +26,17 @@ export default function Projects() {
       </thead>
       <tbody>
         {data?.projects?.map((project) => {
-          return <ProjectRow {...{ project }} key={project?.name} />;
+          return (
+            <ProjectRow
+              {...{ project }}
+              key={project?.name}
+              onUpdate={() => setSelectedProjectToUpdate(project)}
+            />
+          );
         })}
       </tbody>
     </table>
   );
-}
+};
+
+export default Projects;

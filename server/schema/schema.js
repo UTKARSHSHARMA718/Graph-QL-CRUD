@@ -195,7 +195,7 @@ const mutation = new GraphQLObjectType({
         },
       },
       resolve(parent, args) {
-        console.log({args})
+        console.log({ args });
         return Project?.deleteOne({
           _id: args?.id,
         });
@@ -205,22 +205,50 @@ const mutation = new GraphQLObjectType({
       type: ProjectType,
       args: {
         id: {
-          type: new GraphQLNonNull(GraphQLString),
+          type: new GraphQLNonNull(GraphQLID),
         },
         status: {
+          type: new GraphQLEnumType({
+            name: "ProjectStatusUpdate",
+            values: {
+              new: {
+                value: "Not Started",
+              },
+              progress: {
+                value: "In progress",
+              },
+              completed: {
+                value: "Completed",
+              },
+            },
+          }),
+        },
+        description: {
+          type: new GraphQLNonNull(GraphQLString),
+        },
+        name: {
           type: new GraphQLNonNull(GraphQLString),
         },
       },
       resolve(parent, args) {
-        const updatedProject = Project?.updateOne(
+        console.log({ args });
+        let updateObject = {};
+        if (args?.name) {
+          updateObject["name"] = args?.name;
+        }
+        if (args?.description) {
+          updateObject["description"] = args?.description;
+        }
+        if (args?.status) {
+          updateObject["status"] = args?.status;
+        }
+        return Project?.updateOne(
           {
-            id: args?.id,
+            _id: args?.id,
           },
-          {
-            status: args?.status,
-          }
+          updateObject
         );
-        return updatedProject;
+        // console.log({ updatedProject, updateObject });
       },
     },
   },
