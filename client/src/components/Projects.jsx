@@ -15,27 +15,35 @@ const Projects = ({ setSelectedProjectToUpdate }) => {
   }
 
   return (
-    <table className="table table-hover mt-3">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th>Client-ID</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data?.projects?.map((project) => {
-          return (
-            <ProjectRow
-              {...{ project }}
-              key={project?.name}
-              onUpdate={() => setSelectedProjectToUpdate(project)}
-            />
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-10">
+          <div className="table-responsive">
+            <table className="table table-hover mt-3">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                  <th>Client-ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.projects?.map((project) => {
+                  return (
+                    <ProjectRow
+                      {...{ project }}
+                      key={project?.id || project?.name} // Prefer using id if available
+                      onUpdate={() => setSelectedProjectToUpdate(project)}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
